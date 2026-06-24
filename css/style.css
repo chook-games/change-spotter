@@ -1,0 +1,457 @@
+/* ============================================================
+   CHANGE SPOTTER — Main Stylesheet
+   Responsive, mobile-first design for all screen sizes.
+   ============================================================ */
+
+/* ---------- Reset & Base ---------- */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #000;
+    color: #fff;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+}
+
+/* Only prevent touch gestures on game canvas and joysticks, not on menus/buttons */
+#game-container,
+#game-container canvas,
+.joystick-zone {
+    touch-action: none;
+}
+
+
+/* ---------- Game Container (Three.js canvas) ---------- */
+#game-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+#game-container canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* ---------- Utility ---------- */
+.hidden {
+    display: none !important;
+}
+
+/* ---------- HUD ---------- */
+#hud {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    pointer-events: none; /* Allow clicks to pass through to canvas */
+}
+
+#hud > * {
+    pointer-events: auto; /* Re-enable for interactive elements */
+}
+
+/* Top bar */
+#hud-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    font-size: 14px;
+    font-weight: bold;
+}
+
+#level-display {
+    color: #ffcc00;
+    text-shadow: 0 0 8px rgba(255, 204, 0, 0.5);
+    font-size: 16px;
+}
+
+#timer-display {
+    font-size: 24px;
+    font-weight: 900;
+    color: #fff;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    transition: color 0.3s;
+}
+
+#timer-display.warning {
+    color: #ff4444;
+    animation: pulse 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes pulse {
+    from { transform: scale(1); }
+    to { transform: scale(1.15); }
+}
+
+#score-lives {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+}
+
+#score-display {
+    font-size: 16px;
+    color: #00ff88;
+}
+
+#lives-display {
+    font-size: 18px;
+    letter-spacing: 2px;
+    color: #ff4466;
+}
+
+/* Heart shake animation */
+#lives-display.shake {
+    animation: heartShake 0.4s ease-in-out;
+}
+
+@keyframes heartShake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-8px) rotate(-10deg); }
+    40% { transform: translateX(8px) rotate(10deg); }
+    60% { transform: translateX(-5px) rotate(-5deg); }
+    80% { transform: translateX(5px) rotate(5deg); }
+}
+
+/* Bottom bar */
+#hud-bottom {
+    position: absolute;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #ffcc00;
+    text-shadow: 0 0 8px rgba(255, 204, 0, 0.3);
+    white-space: nowrap;
+}
+
+/* Zoom button */
+#zoom-btn {
+    position: absolute;
+    bottom: 120px;
+    right: 20px;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    border: 3px solid rgba(255, 255, 255, 0.6);
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    color: #fff;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    z-index: 15;
+}
+
+#zoom-btn.active {
+    border-color: #00ff88;
+    background: rgba(0, 255, 136, 0.2);
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+}
+
+/* Crosshair */
+#crosshair {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 30px;
+    color: rgba(255, 255, 255, 0.8);
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+    pointer-events: none;
+    z-index: 12;
+    font-weight: 100;
+}
+
+/* ---------- Virtual Joysticks ---------- */
+.joystick-zone {
+    position: fixed;
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    z-index: 20;
+    pointer-events: auto;
+    touch-action: none;
+}
+
+#joystick-left {
+    bottom: 30px;
+    left: 30px;
+}
+
+#joystick-right {
+    bottom: 30px;
+    right: 100px;
+}
+
+.joystick-knob {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.25);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    transition: none;
+}
+
+/* ---------- Menus ---------- */
+.menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 100;
+    padding: 20px;
+    text-align: center;
+}
+
+.game-title {
+    font-size: 42px;
+    font-weight: 900;
+    background: linear-gradient(135deg, #ffcc00, #ff8800);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: none;
+    margin-bottom: 4px;
+    letter-spacing: 2px;
+}
+
+.subtitle {
+    font-size: 16px;
+    color: #aaa;
+    margin-bottom: 30px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+}
+
+.menu h2 {
+    font-size: 32px;
+    margin-bottom: 20px;
+    color: #ffcc00;
+}
+
+.menu-btn {
+    display: block;
+    width: 260px;
+    max-width: 90%;
+    padding: 14px 20px;
+    margin: 8px auto;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+    pointer-events: auto;
+    touch-action: manipulation;
+}
+
+
+.menu-btn:hover,
+.menu-btn:active {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: #ffcc00;
+    transform: scale(1.03);
+}
+
+#high-score-display {
+    margin-top: 20px;
+    font-size: 18px;
+    color: #ffcc00;
+}
+
+/* Instructions */
+.instructions {
+    max-width: 400px;
+    text-align: left;
+    margin: 10px auto 20px;
+    line-height: 1.8;
+    font-size: 15px;
+    color: #ddd;
+}
+
+.instructions p {
+    margin-bottom: 8px;
+    padding-left: 12px;
+    border-left: 3px solid #ffcc00;
+}
+
+/* Game Over / Level Complete stats */
+#gameover-stats p,
+#lc-stats p {
+    font-size: 18px;
+    margin: 6px 0;
+    color: #ddd;
+}
+
+#gameover-stats span,
+#lc-stats span {
+    color: #ffcc00;
+    font-weight: bold;
+}
+
+/* ---------- Fade to Black Overlay ---------- */
+#fade-black {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 55;
+    pointer-events: none;
+    background: #000;
+    opacity: 0;
+    transition: opacity 0.1s;
+}
+
+#fade-black.active {
+    opacity: 1;
+}
+
+/* ---------- Flash Overlays ---------- */
+.flash {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 50;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.1s;
+}
+
+
+#flash-white {
+    background: rgba(255, 255, 255, 0.8);
+}
+
+#flash-red {
+    background: rgba(255, 0, 0, 0.4);
+}
+
+.flash.active {
+    opacity: 1;
+}
+
+/* ---------- Confetti Canvas ---------- */
+#confetti-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 60;
+    pointer-events: none;
+}
+
+/* ---------- Responsive Breakpoints ---------- */
+
+/* Small phones (portrait) */
+@media (max-width: 480px) {
+    .game-title { font-size: 28px; }
+    .subtitle { font-size: 12px; }
+    .menu-btn { width: 220px; font-size: 16px; padding: 12px 16px; }
+    #hud-top { font-size: 12px; padding: 6px 8px; }
+    #timer-display { font-size: 20px; }
+    #level-display { font-size: 13px; }
+    #score-display { font-size: 13px; }
+    #lives-display { font-size: 15px; }
+    #hud-bottom { font-size: 13px; padding: 6px 14px; bottom: 70px; }
+    #zoom-btn { width: 54px; height: 54px; font-size: 10px; bottom: 100px; right: 12px; }
+    .joystick-zone { width: 110px; height: 110px; }
+    .joystick-knob { width: 40px; height: 40px; }
+    #joystick-left { bottom: 20px; left: 20px; }
+    #joystick-right { bottom: 20px; right: 80px; }
+}
+
+/* Landscape phones */
+@media (max-height: 500px) {
+    .game-title { font-size: 24px; }
+    .subtitle { font-size: 11px; margin-bottom: 15px; }
+    .menu-btn { padding: 10px 14px; font-size: 14px; width: 200px; }
+    #hud-top { padding: 4px 8px; font-size: 11px; }
+    #timer-display { font-size: 18px; }
+    #hud-bottom { bottom: 60px; font-size: 12px; padding: 4px 12px; }
+    #zoom-btn { width: 48px; height: 48px; font-size: 9px; bottom: 80px; right: 10px; }
+    .joystick-zone { width: 90px; height: 90px; }
+    .joystick-knob { width: 34px; height: 34px; }
+    #joystick-left { bottom: 15px; left: 15px; }
+    #joystick-right { bottom: 15px; right: 65px; }
+}
+
+/* Tablets */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .game-title { font-size: 52px; }
+    .menu-btn { width: 320px; font-size: 22px; padding: 18px 24px; }
+    #hud-top { font-size: 18px; padding: 12px 20px; }
+    #timer-display { font-size: 32px; }
+    #zoom-btn { width: 80px; height: 80px; font-size: 14px; }
+    .joystick-zone { width: 180px; height: 180px; }
+    .joystick-knob { width: 64px; height: 64px; }
+}
+
+/* Desktop */
+@media (min-width: 1025px) {
+    .game-title { font-size: 56px; }
+    .subtitle { font-size: 18px; }
+    .menu-btn { width: 340px; font-size: 20px; padding: 16px 24px; }
+    #hud-top { font-size: 16px; padding: 10px 16px; }
+    #timer-display { font-size: 28px; }
+    #zoom-btn { width: 60px; height: 60px; font-size: 11px; }
+    .joystick-zone { width: 130px; height: 130px; }
+    .joystick-knob { width: 46px; height: 46px; }
+}

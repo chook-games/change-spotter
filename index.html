@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <title>CHANGE SPOTTER — 3D Memory Challenge</title>
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+    <!-- Three.js canvas will be injected here -->
+    <div id="game-container"></div>
+
+    <!-- ====== HUD Overlay ====== -->
+    <div id="hud" class="hidden">
+        <div id="hud-top">
+            <div id="level-display">LEVEL 1</div>
+            <div id="timer-display">30</div>
+            <div id="score-lives">
+                <span id="score-display">0</span>
+                <span id="lives-display">♥♥♥</span>
+            </div>
+        </div>
+        <div id="hud-bottom">
+            <div id="changes-left">Find 1 change</div>
+        </div>
+        <!-- Zoom button (mobile) -->
+        <button id="zoom-btn">🔍 ZOOM</button>
+        <!-- Crosshair (visible when zoomed) -->
+        <div id="crosshair" class="hidden">+</div>
+    </div>
+
+    <!-- ====== Virtual Joysticks (Mobile) ====== -->
+    <div id="joystick-left" class="joystick-zone hidden">
+        <div class="joystick-knob" id="jk-left"></div>
+    </div>
+    <div id="joystick-right" class="joystick-zone hidden">
+        <div class="joystick-knob" id="jk-right"></div>
+    </div>
+
+    <!-- ====== Menus ====== -->
+    <!-- Main Menu -->
+    <div id="menu-main" class="menu">
+        <h1 class="game-title">CHANGE SPOTTER</h1>
+        <p class="subtitle">3D Memory Challenge</p>
+        <button class="menu-btn" id="btn-start">▶ START GAME</button>
+        <button class="menu-btn" id="btn-howtoplay">❓ HOW TO PLAY</button>
+        <div id="high-score-display">🏆 High Score: <span id="hs-value">0</span></div>
+    </div>
+
+    <!-- How to Play -->
+    <div id="menu-howtoplay" class="menu hidden">
+        <h2>HOW TO PLAY</h2>
+        <div class="instructions">
+            <p><strong>1. Memorise</strong> — Walk around and study the room. You have 30 seconds.</p>
+            <p><strong>2. Changes</strong> — Some objects will change position or colour!</p>
+            <p><strong>3. Find them</strong> — Tap/click objects that changed. +10 pts each.</p>
+            <p><strong>4. Zoom</strong> — Press the 🔍 ZOOM button (or right-click on PC) to enable selection.</p>
+            <p><strong>5. Lives</strong> — Wrong picks cost a ❤️. 3 lives total.</p>
+            <p><strong>6. Bonus</strong> — Finish early for time bonus points!</p>
+        </div>
+        <button class="menu-btn" id="btn-back-main">← BACK</button>
+    </div>
+
+    <!-- Game Over -->
+    <div id="menu-gameover" class="menu hidden">
+        <h2>GAME OVER</h2>
+        <div id="gameover-stats">
+            <p>Level Reached: <span id="go-level">1</span></p>
+            <p>Final Score: <span id="go-score">0</span></p>
+            <p>Changes Found: <span id="go-found">0</span></p>
+            <p>Accuracy: <span id="go-accuracy">0%</span></p>
+        </div>
+        <button class="menu-btn" id="btn-retry">🔄 RETRY</button>
+        <button class="menu-btn" id="btn-menu">🏠 MAIN MENU</button>
+    </div>
+
+    <!-- Level Complete -->
+    <div id="menu-levelcomplete" class="menu hidden">
+        <h2>🎉 LEVEL COMPLETE!</h2>
+        <div id="lc-stats">
+            <p>Score: <span id="lc-score">0</span></p>
+            <p>Time Bonus: +<span id="lc-bonus">0</span></p>
+        </div>
+        <button class="menu-btn" id="btn-next-level">▶ NEXT LEVEL</button>
+    </div>
+
+    <!-- Flash overlays -->
+    <div id="flash-white" class="flash hidden"></div>
+    <div id="flash-red" class="flash hidden"></div>
+
+    <!-- Fade to black overlay (for teleport transition) -->
+    <div id="fade-black" class="hidden"></div>
+
+
+    <!-- Confetti container -->
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- ====== Scripts ====== -->
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"
+        }
+    }
+    </script>
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>
