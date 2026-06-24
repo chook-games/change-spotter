@@ -262,6 +262,7 @@ export class PlayerControls {
         };
 
         const handleTouchEnd = (e) => {
+            if (!this.active) return;
             for (const touch of e.changedTouches) {
                 if (touch.identifier === this.moveTouchId) {
                     this.moveTouchId = null;
@@ -275,6 +276,7 @@ export class PlayerControls {
             }
             e.preventDefault();
         };
+
 
         // Tap on screen for selection when zoomed (mobile)
         const handleTap = (e) => {
