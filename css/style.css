@@ -300,12 +300,28 @@ html, body {
 }
 
 
+.menu-btn-secondary {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.15);
+    font-size: 15px;
+    padding: 10px 16px;
+    width: 200px;
+}
+
+.menu-btn-secondary:hover,
+.menu-btn-secondary:active {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: scale(1.03);
+}
+
 .menu-btn:hover,
 .menu-btn:active {
     background: rgba(255, 255, 255, 0.2);
     border-color: #ffcc00;
     transform: scale(1.03);
 }
+
 
 #high-score-display {
     margin-top: 20px;

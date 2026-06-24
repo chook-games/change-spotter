@@ -101,12 +101,53 @@ export class UI {
         // Bind events
         this._bindMenuEvents();
         this._bindZoomButton();
+        this._bindFullscreenButton();
+    }
+
+
+    /**
+     * Binds the fullscreen toggle button.
+     * Visible on mobile to let users enter fullscreen mode.
+     */
+    _bindFullscreenButton() {
+        const fsBtn = document.getElementById('btn-fullscreen');
+        if (!fsBtn) return;
+
+        // Hide on desktop, show on mobile
+        fsBtn.classList.toggle('hidden', !isTouchDevice());
+
+        fsBtn.addEventListener('click', () => {
+            this.sound.playClick();
+            UI.requestFullscreen();
+        });
+    }
+
+    /**
+     * Requests fullscreen mode on the document element.
+     * Works cross-browser with vendor prefixes.
+     * @returns {Promise<void>}
+     */
+    static async requestFullscreen() {
+        const el = document.documentElement;
+        try {
+            if (el.requestFullscreen) {
+                await el.requestFullscreen();
+            } else if (el.webkitRequestFullscreen) {
+                await el.webkitRequestFullscreen();
+            } else if (el.msRequestFullscreen) {
+                await el.msRequestFullscreen();
+            }
+        } catch (e) {
+            // Fullscreen may be blocked by browser policy — silently fail
+            console.warn('Fullscreen request failed:', e.message);
+        }
     }
 
     /**
      * Binds menu button click events.
      */
     _bindMenuEvents() {
+
         document.getElementById('btn-start').addEventListener('click', () => {
             this.sound.playClick();
             if (this.onStartGame) this.onStartGame();

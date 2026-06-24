@@ -8,6 +8,8 @@ import { Room } from './Room.js';
 import { PlayerControls } from './PlayerControls.js';
 import { UI } from './UI.js';
 import { SoundManager } from './SoundManager.js';
+import { isTouchDevice } from './utils.js';
+
 
 /** Game states */
 const STATE = {
@@ -114,10 +116,16 @@ export class Game {
         // Reset camera
         this.controls.reset();
 
+        // Auto fullscreen on mobile (user gesture already happened via button click)
+        if (isTouchDevice()) {
+            UI.requestFullscreen();
+        }
+
         // Spawn objects and start memorisation
         this.room.spawnObjects();
         this._startMemorizePhase();
     }
+
 
     /**
      * Starts the memorisation phase.
